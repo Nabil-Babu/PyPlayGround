@@ -1,3 +1,5 @@
+import os.path
+
 message = ["Hello", "World"]
 for wrd in message:
     print(wrd)
@@ -19,16 +21,36 @@ class PersonalRecord:
         self.job = job
     
     def __str__(self) -> str:
-        return f"Name: {self.name}\nAge: {self.age}\nJob: {self.job}"
+        return f"Name: {self.name}\nAge: {self.age}\nJob: {self.job}\n"
     
-def WriteRecord(file: str, record: PersonalRecord) -> None:
-    with open(file, 'w') as records:
-        records.write(f'{record.name},{record.age},{record.job}\n')
-
-p1 = PersonalRecord("Nabil", 32, "Game Dev")
-
-WriteRecord("records.txt", p1)
-
 class RecordManager:
+    fileName = 'records.txt'
     allRecords: PersonalRecord = list()
+    def AddRecord(self, pr: PersonalRecord) -> None:
+        self.allRecords.append(pr)
 
+    def DisplayAllRecords(self) -> None:
+        for pr in self.allRecords:
+            print(pr)
+
+    def WriteRecord(self, file: str, pr: PersonalRecord) -> None:
+        if(os.path.exists(file)):
+            with open(file, 'a') as records:
+                records.write(f'{pr.name},{pr.age},{pr.job}\n')
+        else:
+            with open(file, 'w') as records:
+                records.write(f'{pr.name},{pr.age},{pr.job}\n')
+    
+    def WriteAllRecords(self) -> None:
+        for pr in self.allRecords:
+            self.WriteRecord(self.fileName, pr)
+            
+
+# -------- TESTING --------
+rm = RecordManager()
+rm.AddRecord(rec:= PersonalRecord("Nabil",32,"Game Dev"))
+rm.AddRecord(rec:= PersonalRecord("Jess",28,"Analyst"))
+rm.AddRecord(rec:= PersonalRecord("Bob",55,"Engineer"))
+rm.AddRecord(rec:= PersonalRecord("Alice",35,"Technician"))
+rm.DisplayAllRecords()
+rm.WriteAllRecords()
