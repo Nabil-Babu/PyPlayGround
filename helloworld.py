@@ -26,6 +26,14 @@ class PersonalRecord:
 class RecordManager:
     fileName = 'records.txt'
     allRecords: PersonalRecord = list()
+
+    def validateRecord(func):
+        def wrapper(self,pr):
+            if type(pr) == PersonalRecord:
+                func(self, pr)
+        return wrapper    
+
+    @validateRecord 
     def AddRecord(self, pr: PersonalRecord) -> None:
         self.allRecords.append(pr)
 
@@ -52,5 +60,6 @@ rm.AddRecord(rec:= PersonalRecord("Nabil",32,"Game Dev"))
 rm.AddRecord(rec:= PersonalRecord("Jess",28,"Analyst"))
 rm.AddRecord(rec:= PersonalRecord("Bob",55,"Engineer"))
 rm.AddRecord(rec:= PersonalRecord("Alice",35,"Technician"))
+rm.AddRecord("Steve")
 rm.DisplayAllRecords()
-rm.WriteAllRecords()
+# rm.WriteAllRecords()
